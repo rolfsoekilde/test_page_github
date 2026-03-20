@@ -1,9 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematik HHX - Værktøjskasse</title>
+    <style>
+        :root {
+            --hhx-blue: #2c3e50;
+            --hhx-light: #ecf0f1;
+            --accent: #3498db;
+        }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            background-color: var(--hhx-light); 
+            color: #333;
+        }
+        header { 
+            background: var(--hhx-blue); 
+            color: white; 
+            padding: 2rem; 
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .container { 
+            max-width: 1000px; 
+            margin: 40px auto; 
+            padding: 0 20px;
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+        }
+        .card { 
+            background: white; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center; 
+            text-decoration: none; 
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: var(--accent);
+        }
+        .icon { font-size: 3.5rem; margin-bottom: 15px; }
+        h2 { margin: 10px 0; color: var(--hhx-blue); }
+        p { color: #666; line-height: 1.5; flex-grow: 1; }
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--accent);
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        footer { text-align: center; margin-top: 50px; color: #95a5a6; font-size: 0.9rem; }
+    </style>
+</head>
 <body>
-<h1>This is an index page</h1>
-<p>I'm hosted with GitHub Pages. Can this update
-I'm a subpage of the main page
-</p>
+
+<header>
+    <h1>Matematik HHX</h1>
+    <p>Interaktive værktøjer til undervisningen</p>
+</header>
+
+<div class="container">
+    <div class="grid">
+        <a href="chi_square.html" class="card">
+            <div>
+                <div class="icon">📊</div>
+                <h2>Statistik</h2>
+                <p>Visualisering af &chi;&sup2;-test, p-værdier og kritiske værdier. Perfekt supplement til Excel-analyser.</p>
+            </div>
+            <div class="btn">Åbn værktøj</div>
+        </a>
+
+        <a href="annuitet.html" class="card">
+            <div>
+                <div class="icon">💰</div>
+                <h2>Finansiel Regning</h2>
+                <p>Se hvordan restgæld, renter og afdrag udvikler sig i et annuitetslån over tid.</p>
+            </div>
+            <div class="btn">Åbn værktøj</div>
+        </a>
+
+        <div class="card" style="opacity: 0.7; cursor: not-allowed;">
+            <div>
+                <div class="icon">📈</div>
+                <h2>Optimering</h2>
+                <p>Lineær programmering og niveaulinjer. (Under udvikling)</p>
+            </div>
+            <div class="btn" style="background: #95a5a6;">Kommer snart</div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 - Udviklet til HHX Matematik</p>
+</footer>
+
 </body>
 </html>
