@@ -3,170 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>U Nord - Matematik HHX</title>
+    <title>U Nord Frederikssund - Matematik HHX</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --unord-blue: #002d52;
-            --unord-green: #00b19d;
-            --unord-bg: #f4f7f9;
-            --text-dark: #1a1a1a;
+            /* Officielle U Nord Frederikssund farver */
+            --unord-dark-blue: #002d52;
+            --unord-turq: #00b19d;
+            --unord-light-grey: #f2f5f7;
+            --white: #ffffff;
+            --text-color: #1a1a1a;
         }
 
         body { 
             font-family: 'Montserrat', sans-serif; 
             margin: 0; 
-            background-color: var(--unord-bg); 
-            color: var(--text-dark);
+            background-color: var(--unord-light-grey); 
+            color: var(--text-color);
+            line-height: 1.6;
         }
 
-        /* Top Navigation Bar */
+        /* Top Navigation / Tabs */
         header {
-            background-color: white;
-            border-bottom: 3px solid var(--unord-green);
-            padding: 0 10%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background-color: var(--white);
+            border-bottom: 4px solid var(--unord-turq);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--unord-blue);
-            text-transform: uppercase;
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
         }
 
-        nav ul {
-            list-style: none;
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--unord-dark-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tabs {
             display: flex;
+            list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        nav ul li a {
+        .tabs li a {
             display: block;
             padding: 25px 20px;
             text-decoration: none;
-            color: var(--unord-blue);
-            font-weight: 600;
-            transition: 0.3s;
+            color: var(--unord-dark-blue);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+            margin-bottom: -4px; /* Flusher med header border */
         }
 
-        nav ul li a:hover, nav ul li a.active {
-            color: var(--unord-green);
-            background: rgba(0, 177, 157, 0.05);
+        .tabs li a:hover {
+            color: var(--unord-turq);
+            background-color: rgba(0, 177, 157, 0.05);
         }
 
-        /* Hero / Welcome section */
+        .tabs li a.active {
+            border-bottom: 4px solid var(--unord-dark-blue);
+            color: var(--unord-dark-blue);
+        }
+
+        /* Hero Section */
         .hero {
-            background-color: var(--unord-blue);
-            color: white;
-            padding: 60px 10%;
-            text-align: left;
+            background-color: var(--unord-dark-blue);
+            color: var(--white);
+            padding: 80px 20px;
+            text-align: center;
         }
 
-        .hero h1 { margin: 0; font-size: 2.5rem; }
-        .hero p { opacity: 0.8; font-size: 1.1rem; }
+        .hero h1 { 
+            margin: 0; 
+            font-size: 2.8rem; 
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
 
-        /* Content Area */
+        .hero p { 
+            font-size: 1.2rem; 
+            opacity: 0.9; 
+            max-width: 700px; 
+            margin: 20px auto 0;
+            font-weight: 300;
+        }
+
+        /* Content Grid */
         .container {
-            max-width: 1200px;
-            margin: 40px auto;
+            max-width: 1100px;
+            margin: 60px auto;
             padding: 0 20px;
+        }
+
+        .section-title {
+            border-left: 8px solid var(--unord-turq);
+            padding-left: 15px;
+            margin-bottom: 40px;
+            color: var(--unord-dark-blue);
+            font-size: 1.8rem;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
         }
 
         .card {
-            background: white;
-            padding: 30px;
-            border-radius: 0; /* U Nord bruger ofte skarpe eller meget svagt afrundede hjørner */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: 0.3s;
-            border-left: 5px solid var(--unord-blue);
+            background: var(--white);
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            border-left-color: var(--unord-green);
+            transform: translateY(-10px);
         }
 
-        .card h2 { color: var(--unord-blue); margin-top: 0; }
-        .card p { font-size: 0.95rem; line-height: 1.6; color: #555; }
+        .card h3 { 
+            color: var(--unord-dark-blue); 
+            margin-top: 0; 
+            font-size: 1.5rem;
+        }
 
+        .card p {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        /* Knapper i U Nord stil */
         .btn {
             display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background-color: var(--unord-green);
-            color: white;
+            padding: 15px 30px;
+            background-color: var(--unord-turq);
+            color: var(--white);
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.9rem;
             text-transform: uppercase;
-            transition: 0.3s;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: background 0.3s;
+            text-align: center;
         }
 
-        .btn:hover { background-color: var(--unord-blue); }
+        .btn:hover {
+            background-color: var(--unord-dark-blue);
+        }
 
         footer {
+            background: var(--white);
+            padding: 40px 20px;
             text-align: center;
-            padding: 40px;
+            border-top: 1px solid #ddd;
+            margin-top: 80px;
+            color: #777;
             font-size: 0.8rem;
-            color: #999;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">U Nord <span style="font-weight: 300;">Matematik</span></div>
-    <nav>
-        <ul>
-            <li><a href="index.html" class="active">Værktøj</a></li>
-            <li><a href="bog.html">Bog / Teori</a></li>
-            <li><a href="cases.html">Eksamens-cases</a></li>
+    <div class="nav-container">
+        <div class="logo">U Nord <span style="font-weight:300">Frederikssund</span></div>
+        <nav>
+            <ul class="tabs">
+                <li><a href="index.html" class="active">Værktøj</a></li>
+                <li><a href="bog.html">Bog</a></li>
+                <li><a href="cases.html">Cases</a></li>
+                <li><a href="links.html">Links</a></li>
             </ul>
-    </nav>
+        </nav>
+    </div>
 </header>
 
 <section class="hero">
-    <h1>Interaktive Værktøjer</h1>
-    <p>Støtteværktøjer til Excel, Maple og GeoGebra i undervisningen på HHX.</p>
+    <h1>Matematik HHX</h1>
+    <p>Interaktive ressourcer designet til undervisningen på Frederikssund Handelsskole.</p>
 </section>
 
 <div class="container">
+    <h2 class="section-title">Matematiske Værktøjer</h2>
     <div class="grid">
         <div class="card">
-            <h2>&chi;&sup2;-Test</h2>
-            <p>Udfør uafhængighedstest og visualisér p-værdien grafisk. Bruges som kontrol af dine beregninger i Excel.</p>
-            <a href="chi_square.html" class="btn">Gå til test</a>
+            <h3>&chi;&sup2;-Test</h3>
+            <p>Uafhængighedstest med dynamisk visualisering af forkastningsområdet og p-værdi.</p>
+            <a href="chi_square.html" class="btn">Åbn Værktøj</a>
         </div>
 
         <div class="card">
-            <h2>Annuitetslån</h2>
-            <p>Beregn ydelser og se fordelingen mellem renter og afdrag. Forstå mekanikken bag finansielle tabeller.</p>
-            <a href="annuitet.html" class="btn">Gå til beregner</a>
+            <h3>Annuitetslån</h3>
+            <p>Få overblik over restgældsudvikling og se forholdet mellem rente og afdrag grafisk.</p>
+            <a href="annuitet.html" class="btn">Åbn Værktøj</a>
         </div>
-        
-        <div class="card">
-            <h2>Optimering</h2>
-            <p>Lineær programmering og niveaulinjer. Find det optimale dækningsbidrag grafisk.</p>
-            <a href="#" class="btn" style="background-color: #ccc;">Kommer snart</a>
+
+        <div class="card" style="border-top: 5px solid #ccc;">
+            <h3>Lineær Optimering</h3>
+            <p>Interaktiv niveaulinje-model til optimeringsopgaver. Under udvikling.</p>
+            <span class="btn" style="background-color: #ccc; cursor: not-allowed;">Kommer snart</span>
         </div>
     </div>
 </div>
 
 <footer>
-    &copy; 2024 U Nord - HHX Matematik | Udviklet til undervisningsbrug
+    <p>&copy; 2024 U Nord Frederikssund Handelsskole | Matematik B & A</p>
 </footer>
 
 </body>
