@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>χ²-Test - U Nord Frederikssund</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --unord-blue: #002d52;
+            --unord-turq: #00b19d;
+            --unord-bg: #f2f5f7;
+            --white: #ffffff;
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            margin: 0; 
+            background-color: var(--unord-bg); 
+            color: var(--unord-blue);
+        }
+
+        /* Navigation / Tabs */
+        header {
+            background-color: var(--white);
+            border-bottom: 4px solid var(--unord-turq);
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-weight: 700; text-transform: uppercase; font-size: 1.1rem; }
+        
+        .tabs { display: flex; list-style: none; margin: 0; padding: 0; }
+        .tabs li a {
+            display: block;
+            padding: 20px 15px;
+            text-decoration: none;
+            color: var(--unord-blue);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .tabs li a.active { border-bottom: 4px solid var(--unord-blue); margin-bottom: -4px; }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
+
+        /* Sidebar Controls */
+        .controls {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .control-group { margin-bottom: 25px; }
+        label { display: block; font-weight: 700; margin-bottom: 10px; font-size: 0.9rem; }
+        input[type=range] { width: 100%; cursor: pointer; accent-color: var(--unord-turq); }
+        .val-display { font-size: 1.2rem; font-weight: 700; color: var(--unord-turq); }
+
+        /* Chart & Info Area */
+        .content-area {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        #info {
+            background: var(--unord-blue);
+            color: white;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        canvas { width: 100% !important; height: 55vh !important; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <div class="logo">U Nord <span style="font-weight:300">Matematik</span></div>
+        <nav>
+            <ul class="tabs">
+                <li><a href="index.html" class="active">Værktøj</a></li>
+                <li><a href="bog.html">Bog</a></li>
+                <li><a href="cases.html">Cases</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="main-container">
+    <aside class="controls">
+        <h2 style="margin-top:0; font-size: 1.2rem;">Indstillinger</h2>
+        
+        <div class="control-group">
+            <label>Frihedsgrader (df)</label>
+            <input type="range" id="df" min="1" max="50" value="5" oninput="update()">
+            <div id="dfVal" class="val-display">5</div>
+        </div>
+
+        <div class="control-group">
+            <label>Signifikansniveau (α)</label>
+            <input type="range" id="alpha" min="0.01" max="0.2" step="0.01" value="0.05" oninput="update()">
+            <div id="alphaVal" class="val-display">0.05</div>
+        </div>
+
+        <div class="control-group">
+            <label>Teststørrelse (Q)</label>
+            <input type="range" id="q" min="0" max="60" step="0.1" value="8" oninput="update()">
+            <div id="qVal" class="val-display">8.0</div>
+        </div>
+        
+        <p style="font-size: 0.8rem; color: #666;">Brug skyderne til at se, hvordan p-værdien og det kritiske område ændrer sig.</p>
+    </aside>
+
+    <main class="content-area">
+        <div id="info">Indlæser...</div>
+        <canvas id="chart"></canvas>
+    </main>
+</div>
+
+<script>
+let chart;
+const ctx = document.getElementById('chart').getContext('2d');
+
+function update() {
+    const df = parseInt(document.getElementById("df").value);
+    const alpha = parseFloat(document.getElementById("alpha").value);
+    const q = parseFloat(document.getElementById("q").value);
+
+    document.getElementById("dfVal").innerText = df;
+    document.getElementById("alphaVal").innerText = alpha.toFixed(2);
+    document.getElementById("qVal").innerText = q.toFixed(1);
+
+    const crit = jStat.chisquare.inv(1 - alpha, df);
+    const p = 1 - jStat.chisquare.cdf(q, df);
+    const decision = q > crit ? "FORKAST H₀" : "BEHOLD H₀";
+    const decisionColor = q > crit ? "#ff4d4d" : "#00b19d";
+
+    document.getElementById("info").innerHTML = 
+        `Kritisk: ${crit.toFixed(2)} | p-værdi: <span style="color:var(--unord-turq)">${p.toFixed(4)}</span> | <span style="color:${decisionColor}">${decision}</span>`;
+
+    const xMax = Math.max(df + 5 * Math.sqrt(2 * df), crit * 1.3, q * 1.2, 12);
+    const step = xMax / 250;
+    
+    let curve = [], tail = [], pArea = [];
+    let maxDensityFound = 0;
+
+    for (let x = 0.001; x <= xMax; x += step) {
+        let y = jStat.chisquare.pdf(x, df);
+        curve.push({x, y});
+        tail.push({x, y: x >= crit ? y : null});
+        pArea.push({x, y: x >= q ? y : null});
+        if (x > 0.1 && y > maxDensityFound) maxDensityFound = y;
+    }
+
+    const yLimit = df <= 2 ? 0.6 : maxDensityFound * 1.2;
+
+    const data = {
+        datasets: [
+            { label: 'p-værdi (Areal)', data: pArea, backgroundColor: 'rgba(0, 177, 157, 0.4)', fill: true, pointRadius: 0, order: 2 },
+            { label: 'Forkastningsområde', data: tail, backgroundColor: 'rgba(255, 77, 77, 0.2)', borderColor: 'red', fill: true, pointRadius: 0, order: 1 },
+            { label: 'χ²-fordeling', data: curve, borderColor: '#002d52', borderWidth: 3, pointRadius: 0, fill: false, order: 0 },
+            { label: 'Kritisk værdi', data: [{x: crit, y: 0}, {x: crit, y: yLimit}], borderColor: 'red', borderDash: [10, 5], borderWidth: 2, pointRadius: 0 },
+            { label: 'Din Q-værdi', data: [{x: q, y: 0}, {x: q, y: yLimit}], borderColor: '#002d52', borderWidth: 4, pointRadius: 0 }
+        ]
+    };
+
+    if (chart) {
+        chart.data.datasets = data.datasets;
+        chart.options.scales.x.max = xMax;
+        chart.options.scales.y.max = yLimit;
+        chart.update('none');
+    } else {
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: { 
+                    legend: { labels: { font: { size: 14, family: 'Montserrat', weight: 'bold' } } } 
+                },
+                scales: {
+                    x: { 
+                        type: 'linear', 
+                        title: { display: true, text: 'χ²-værdi', font: { size: 16, weight: 'bold' } },
+                        ticks: { font: { size: 12 } }
+                    },
+                    y: { 
+                        min: 0, max: yLimit, 
+                        title: { display: true, text: 'Sandsynlighedstæthed', font: { size: 16, weight: 'bold' } }
+                    }
+                }
+            }
+        });
+    }
+}
+
+update();
+</script>
+</body>
+</html>
